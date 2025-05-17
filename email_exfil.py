@@ -2,6 +2,8 @@
 
 import zipfile
 import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 # Compress the client component files into a ZIP archive
 with zipfile.ZipFile('client_component.zip', 'w') as zip:
