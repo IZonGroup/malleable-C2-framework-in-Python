@@ -1,2 +1,2 @@
-# mailable-C2-framework-in-Python
+# malleable-C2-framework-in-Python
 still working through this 
